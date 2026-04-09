@@ -105,3 +105,7 @@ This project is open source. Feel free to use and modify it for personal use.
 ---
 
 *Visca el Barca!*
+
+---
+
+Built on top of [Gameograf's FC Barcelona Emblem Live extension](https://chromewebstore.google.com/detail/fc-barcelona-emblem-live/pojadffognkepfclajophbeojahgkjlo)
