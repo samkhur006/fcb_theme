@@ -1,6 +1,6 @@
-let apiShortcuts = [];
+let topSites = [];
 let userShortcuts = [];
-let deletedApiShortcuts = [];
+let deletedTopSites = [];
 
 const videoUrl = "img/bg.mp4";
 
@@ -16,10 +16,7 @@ $(document).ready(function () {
     }
 
     loadUserData();
-    fetchAndUpdateShortcuts();
-
-    // Kısayol verilerini 1 saatte bir kontrol et (3600000 ms = 1 saat)
-    setInterval(fetchAndUpdateShortcuts, 3600000);
+    fetchTopSites();
 
     activateClock();
     handleSearch();
@@ -31,34 +28,25 @@ $(document).ready(function () {
 // Kullanıcı verilerini localStorage'dan yükle
 function loadUserData() {
     userShortcuts = JSON.parse(localStorage.getItem("userShortcuts") || "[]");
-    deletedApiShortcuts = JSON.parse(localStorage.getItem("deletedApiShortcuts") || "[]");
+    deletedTopSites = JSON.parse(localStorage.getItem("deletedTopSites") || "[]");
 }
 
 // Kullanıcı verilerini localStorage'a kaydet
 function saveUserData() {
     localStorage.setItem("userShortcuts", JSON.stringify(userShortcuts));
-    localStorage.setItem("deletedApiShortcuts", JSON.stringify(deletedApiShortcuts));
+    localStorage.setItem("deletedTopSites", JSON.stringify(deletedTopSites));
 }
 
-// API'den kısayol verisini çek ve listeyi güncelle
-function fetchAndUpdateShortcuts() {
-    fetch("https://api.gameograf.com/js/shortcuts.json")
-        .then(response => response.json())
-        .then(data => {
-            // API'den gelen verilerde değişiklik olup olmadığını kontrol et
-            if (JSON.stringify(apiShortcuts) !== JSON.stringify(data)) {
-                apiShortcuts = data;
-                createShortcuts();
-                console.log("Shortcuts updated from API");
-            }
-        })
-        .catch(error => {
-            console.error("Shortcuts could not be loaded from server:", error);
-            // API yoksa yine göster, ancak sadece ilk seferde değilse
-            if (apiShortcuts.length === 0) {
-                createShortcuts();
-            }
-        });
+// Chrome'un en çok ziyaret edilen sitelerini al
+function fetchTopSites() {
+    chrome.topSites.get((sites) => {
+        topSites = sites.slice(0, 6).map(site => ({
+            name: site.title,
+            url: site.url,
+            icon: null
+        }));
+        createShortcuts();
+    });
 }
 
 // Kısayolları oluştur ve göster
@@ -66,11 +54,11 @@ function createShortcuts() {
     const shortcut_element = $("#shortcutContainer");
     shortcut_element.empty();
 
-    // API kısayollarından kullanıcı tarafından silinmiş olanları çıkar
-    const filteredApiShortcuts = apiShortcuts.filter(link => !deletedApiShortcuts.includes(link.url));
+    // En çok ziyaret edilen sitelerden kullanıcı tarafından silinmiş olanları çıkar
+    const filteredTopSites = topSites.filter(link => !deletedTopSites.includes(link.url));
 
-    // Tüm kısayollar: API + Kullanıcı ekledikleri
-    const allShortcuts = [...filteredApiShortcuts, ...userShortcuts];
+    // Tüm kısayollar: En çok ziyaret edilenler + Kullanıcı ekledikleri
+    const allShortcuts = [...filteredTopSites, ...userShortcuts];
 
     allShortcuts.forEach(link => {
         const icon_url = link.icon ? link.icon : `https://www.google.com/s2/favicons?domain=${link.url}&sz=48`;
@@ -110,9 +98,9 @@ function createShortcuts() {
 }
 
 function removeShortcut(url) {
-    if (apiShortcuts.find(s => s.url === url)) {
-        if (!deletedApiShortcuts.includes(url)) {
-            deletedApiShortcuts.push(url);
+    if (topSites.find(s => s.url === url)) {
+        if (!deletedTopSites.includes(url)) {
+            deletedTopSites.push(url);
         }
     } else {
         userShortcuts = userShortcuts.filter(s => s.url !== url);
