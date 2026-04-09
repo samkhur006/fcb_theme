@@ -57,7 +57,7 @@ async function fetchBarcaNews() {
     }
   ];
   
-  displayNews(0);
+  displayNews(0, false);
   // Only start auto-rotate if it's not already running
   if (!autoRotateInterval) {
     startAutoRotate();
@@ -65,7 +65,7 @@ async function fetchBarcaNews() {
   
   // Try to fetch live news in background (optional)
   try {
-    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://news.google.com/rss/search?q=FC+Barcelona&hl=en-US&gl=US&ceid=US:en')}&api_key=up8sg05sqghimsr54xe1awnaykczg3rnsqet36ri&count=10`;
+    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent('https://news.google.com/rss/search?q=FC+Barcelona&hl=en-US&gl=US&ceid=US:en')}&count=10`;
     const response = await fetch(apiUrl);
     const data = await response.json();
     
@@ -98,7 +98,7 @@ async function fetchBarcaNews() {
           'ESPN': 'espn.com',
           'BBC Sport': 'bbc.com',
           'BBC': 'bbc.com',
-          'beIN SPORTS': 'beinsports.com',
+          'beIN SPORTS': 'www.beinsports.com',
           'Barca Blaugranes': 'barcablaugranes.com',
           'Barca Universal': 'barcauniversal.com',
           'Marca': 'marca.com',
@@ -193,31 +193,53 @@ function extractImageFromDescription(description) {
   return null;
 }
 
-function displayNews(index) {
+function displayNews(index, animate = true) {
   if (newsArticles.length === 0) return;
   
   currentNewsIndex = index;
   const article = newsArticles[index];
   
+  const newsContent = document.getElementById('newsContent');
   const newsImage = document.getElementById('newsImage');
   const newsTitle = document.getElementById('newsTitle');
   const newsSource = document.getElementById('newsSource');
   const newsTicker = document.getElementById('newsTicker');
   
-  newsImage.src = article.imageUrl;
-  newsImage.onerror = function() {
-    this.src = 'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/200px-FC_Barcelona_%28crest%29.svg.png';
-  };
+  const barcaLogo = 'https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/200px-FC_Barcelona_%28crest%29.svg.png';
   
-  newsTitle.textContent = article.title;
-  newsSource.textContent = article.source;
+  function updateContent() {
+    newsImage.onerror = function() {
+      this.src = barcaLogo;
+    };
+    newsImage.onload = function() {
+      // Google favicon service returns a tiny 16x16 default globe for unknown domains
+      if (this.naturalWidth <= 16 || this.naturalHeight <= 16) {
+        this.src = barcaLogo;
+      }
+    };
+    newsImage.src = article.imageUrl;
+    
+    newsTitle.textContent = article.title;
+    newsSource.textContent = article.source;
+    
+    // Update click handler to open article
+    newsTicker.onclick = (e) => {
+      if (!e.target.classList.contains('news-nav-btn')) {
+        window.open(article.link, '_blank');
+      }
+    };
+  }
   
-  // Update click handler to open article
-  newsTicker.onclick = (e) => {
-    if (!e.target.classList.contains('news-nav-btn')) {
-      window.open(article.link, '_blank');
-    }
-  };
+  if (animate && newsContent) {
+    // Fade out, update, fade in
+    newsContent.classList.add('fade-out');
+    setTimeout(() => {
+      updateContent();
+      newsContent.classList.remove('fade-out');
+    }, 400);
+  } else {
+    updateContent();
+  }
 }
 
 function showError(message) {
@@ -276,6 +298,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Fetch news on load
   fetchBarcaNews();
   
-  // Refresh news every 10 minutes
-  setInterval(fetchBarcaNews, 600000);
+  // Refresh news every 120 minutes
+  setInterval(fetchBarcaNews, 7200000);
 });
