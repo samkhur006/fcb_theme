@@ -1,5 +1,5 @@
 {
-   "author": "Gameograf",
+   "author": "Sambhav Khurana",
    "background": {
       "service_worker": "js/bg.js"
    },
@@ -8,13 +8,11 @@
    },
    "default_locale": "en",
    "description": "__MSG_appDesc__",
-   "host_permissions": [ "https://api.gameograf.com/*" ],
    "icons": {
       "128": "img/128.png",
       "16": "img/128.png",
       "48": "img/128.png"
    },
-   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA24H0l40JvWtJbPJluN5RjkB69SCKOfXIemXQAO+pI/SIXibii4f1cjPHi9lQsFW4ZRnNasv8XuiN73g269m+05EGWAt61BQqzD6WGdFbtwk59GixaBeD5Ou1O9Qc0LUa+lzj2KJ8T5e/75UM6CxpOZsKKFSqvqA9AiZfC1pgPZK2A0Mr8+hlWLiy+ZmV7/l3h0AWMNhmEJ5otB2qXk43/Arjyam+W83T58GE9cD8+cTl/EDIb7/J80177BvuolN+n7Ons3yzTE9Du1lMgAL+eoZt8EkdzV4BuYN+teAPDt6o+Bk67uJSOQsS6NGUF3Nkoc53pj28Uj5sOYcA5cpRmQIDAQAB",
    "manifest_version": 3,
    "name": "__MSG_appName__",
    "permissions": [ "search" ],
