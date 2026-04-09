@@ -63,6 +63,27 @@
             <button id="appendShortcut">Add</button>
         </div>
 
+        <!-- FC Barcelona Match Center -->
+        <div id="matchCenterPanel">
+            <div id="mcHeader">
+                <span class="mc-title">⚽ FCB Match Center</span>
+                <div class="mc-header-btns">
+                    <div id="mcCacheInfo" class="mc-cache-info-wrap">
+                        <button class="mc-btn" title="Cache Status">?</button>
+                        <div id="mcCacheTooltip" class="mc-cache-tooltip"></div>
+                    </div>
+                    <button id="mcRefresh" class="mc-btn" title="Refresh">↻</button>
+                    <button id="mcToggle" class="mc-btn" title="Close">✕</button>
+                </div>
+            </div>
+            <div id="matchCenterContent">
+                <div class="mc-loading">Loading...</div>
+            </div>
+            <div id="mcNextMatch"></div>
+            <div id="mcStandings"></div>
+        </div>
+        <button id="mcFab" title="Open Match Center">⚽</button>
+
         <div id="newsTicker">
             <div id="newsContent">
                 <img id="newsImage" src="" alt="News thumbnail">
@@ -86,6 +107,8 @@
         <script src="js/timer.js"></script>
         <script src="js/popup.js"></script>
         <script src="js/barcaNews.js"></script>
+        <script src="js/config.js"></script>
+        <script src="js/barcaLive.js"></script>
         
 
 	</body>

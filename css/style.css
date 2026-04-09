@@ -1325,3 +1325,380 @@ body {
 .hint.hidden {
   display: none;
 }
+
+/* ============== FC Barcelona Match Center ============== */
+#matchCenterPanel {
+  position: fixed;
+  top: calc(80px * var(--scale));
+  right: calc(100px * var(--scale));
+  width: calc(320px * var(--scale));
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: calc(14px * var(--scale));
+  padding: 0;
+  z-index: 9998;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  opacity: 0.85;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+#matchCenterPanel:hover {
+  opacity: 1;
+}
+
+#matchCenterPanel.mc-hidden {
+  display: none;
+}
+
+/* FAB button to reopen Match Center */
+#mcFab {
+  display: none;
+  position: fixed;
+  top: calc(80px * var(--scale));
+  right: calc(100px * var(--scale));
+  width: calc(44px * var(--scale));
+  height: calc(44px * var(--scale));
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  font-size: calc(20px * var(--scale));
+  cursor: pointer;
+  z-index: 9998;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  transition: transform 0.2s, background 0.2s;
+  opacity: 0.7;
+}
+
+#mcFab:hover {
+  transform: scale(1.1);
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.85);
+}
+
+#mcFab.mc-fab-visible {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Upcoming match badge */
+.mc-upcoming-badge {
+  color: #64B5F6;
+  font-size: calc(11px * var(--scale));
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: calc(4px * var(--scale));
+}
+
+#mcHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(10px * var(--scale)) calc(14px * var(--scale));
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.mc-title {
+  font-size: calc(13px * var(--scale));
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.mc-header-btns {
+  display: flex;
+  gap: calc(6px * var(--scale));
+  align-items: center;
+}
+
+/* Cache info tooltip */
+.mc-cache-info-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.mc-cache-tooltip {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: calc(240px * var(--scale));
+  background: rgba(15, 15, 20, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: calc(8px * var(--scale));
+  padding: calc(10px * var(--scale));
+  z-index: 10001;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.mc-cache-info-wrap:hover .mc-cache-tooltip {
+  display: block;
+}
+
+.mc-cache-tooltip table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: calc(10px * var(--scale));
+  color: rgba(255,255,255,0.85);
+}
+
+.mc-cache-tooltip th {
+  text-align: left;
+  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+  padding: calc(3px * var(--scale)) calc(6px * var(--scale));
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: calc(9px * var(--scale));
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mc-cache-tooltip td {
+  padding: calc(3px * var(--scale)) calc(6px * var(--scale));
+  white-space: nowrap;
+}
+
+.mc-cache-tooltip .mc-cache-hit {
+  color: #4CAF50;
+}
+
+.mc-cache-tooltip .mc-cache-miss {
+  color: #ff9800;
+}
+
+.mc-btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #fff;
+  width: calc(28px * var(--scale));
+  height: calc(28px * var(--scale));
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: calc(14px * var(--scale));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.mc-btn:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+/* Match Center Content */
+#matchCenterContent {
+  padding: calc(12px * var(--scale)) calc(14px * var(--scale));
+}
+
+.mc-loading {
+  text-align: center;
+  color: rgba(255,255,255,0.5);
+  font-size: calc(12px * var(--scale));
+  padding: calc(16px * var(--scale)) 0;
+}
+
+/* Live Badge */
+.mc-live-badge {
+  color: #ff4444;
+  font-size: calc(11px * var(--scale));
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: calc(4px * var(--scale));
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+#matchCenterPanel.mc-live {
+  border: 1px solid rgba(255, 68, 68, 0.4);
+  opacity: 1;
+}
+
+.mc-competition {
+  font-size: calc(10px * var(--scale));
+  color: rgba(255,255,255,0.5);
+  margin-bottom: calc(10px * var(--scale));
+}
+
+/* Score Board */
+.mc-score-board {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(8px * var(--scale));
+}
+
+.mc-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(6px * var(--scale));
+  flex: 1;
+}
+
+.mc-team-logo {
+  width: calc(40px * var(--scale));
+  height: calc(40px * var(--scale));
+  object-fit: contain;
+}
+
+.mc-team-name {
+  font-size: calc(11px * var(--scale));
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.mc-score {
+  display: flex;
+  align-items: center;
+  gap: calc(6px * var(--scale));
+}
+
+.mc-score-num {
+  font-size: calc(28px * var(--scale));
+  font-weight: 700;
+}
+
+.mc-score-sep {
+  font-size: calc(20px * var(--scale));
+  color: rgba(255,255,255,0.4);
+}
+
+/* No Data / No Match */
+.mc-no-data {
+  text-align: center;
+  padding: calc(10px * var(--scale)) 0;
+}
+
+.mc-barca-crest {
+  width: calc(50px * var(--scale));
+  height: calc(50px * var(--scale));
+  margin-bottom: calc(8px * var(--scale));
+  opacity: 0.7;
+}
+
+.mc-no-match {
+  font-size: calc(13px * var(--scale));
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+}
+
+.mc-no-match-sub {
+  font-size: calc(11px * var(--scale));
+  color: rgba(255,255,255,0.4);
+  margin-top: calc(2px * var(--scale));
+}
+
+/* Next/Last Match Section */
+#mcNextMatch {
+  padding: calc(10px * var(--scale)) calc(14px * var(--scale));
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.mc-section-title {
+  font-size: calc(10px * var(--scale));
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: calc(6px * var(--scale));
+}
+
+.mc-fixture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(8px * var(--scale));
+}
+
+.mc-fix-team {
+  font-size: calc(12px * var(--scale));
+  font-weight: 500;
+}
+
+.mc-fix-vs {
+  font-size: calc(11px * var(--scale));
+  color: rgba(255,255,255,0.4);
+}
+
+.mc-fix-score {
+  font-size: calc(14px * var(--scale));
+  font-weight: 700;
+  color: #ffd700;
+}
+
+.mc-fix-info {
+  font-size: calc(10px * var(--scale));
+  color: rgba(255,255,255,0.4);
+  text-align: center;
+  margin-top: calc(4px * var(--scale));
+}
+
+/* Standings Section */
+#mcStandings {
+  padding: calc(10px * var(--scale)) calc(14px * var(--scale)) calc(14px * var(--scale));
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.mc-standings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: calc(10px * var(--scale));
+}
+
+.mc-standings-table thead th {
+  color: rgba(255,255,255,0.4);
+  font-weight: 500;
+  padding: calc(4px * var(--scale)) calc(3px * var(--scale));
+  text-align: center;
+}
+
+.mc-standings-table thead th:nth-child(2) {
+  text-align: left;
+}
+
+.mc-standings-table tbody td {
+  padding: calc(4px * var(--scale)) calc(3px * var(--scale));
+  text-align: center;
+  color: rgba(255,255,255,0.7);
+}
+
+.mc-standings-table tbody td:nth-child(2) {
+  text-align: left;
+}
+
+.mc-stand-team {
+  font-weight: 500;
+  max-width: calc(100px * var(--scale));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mc-stand-pts {
+  font-weight: 700;
+  color: #fff;
+}
+
+.mc-barca-row {
+  background: rgba(164, 0, 62, 0.25);
+  border-radius: calc(4px * var(--scale));
+}
+
+.mc-barca-row td {
+  color: #ffd700 !important;
+}
