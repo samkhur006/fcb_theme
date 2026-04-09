@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>New Tab</title>
+		<link rel="stylesheet" href="/css/style.css" />
+		<link rel="shortcut icon" href="/img/128.jpng" type="image/x-icon" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet" />
+		<link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+		<script src="/js/jquery-3.7.1.min.js"></script>
+	</head>
+	<body>
+		<div id="popupContainer"></div>
+		<div id="remote-popup">
+	<div id="remote-popup-content">
+	
+	</div>
+</div>
+		<div id="searchBar">
+			<input type="text" id="searchInput" placeholder="Search on web" />
+			<span id="searchTrigger" class="material-symbols-outlined"> search </span>
+		</div>
+        <div id="shortcutContainer"></div>
+<div id="rightIcons">
+
+  <!-- Tools Ana İkonu -->
+  <div class="iconWrapper" id="toolsWrapper">
+    <img src="/icons/tools.png" alt="Tools" id="toolsIcon" />
+    
+    <!-- Açılır Menü -->
+    <div id="toolsMenu">
+      <div class="iconWrapper" id="googleAppsIcon">
+        <img src="/icons/googleapps.png" alt="Google Apps" />
+      </div>
+      <div class="iconWrapper" id="chatgptIcon">
+        <img src="/icons/chatgpt.png" alt="ChatGPT" />
+      </div>
+      <div class="iconWrapper" id="calendarIcon">
+        <img src="/icons/calendar.png" alt="Takvim" />
+      </div>
+      <div class="iconWrapper" id="calculatorIcon">
+        <img src="/icons/calculator.png" alt="Calculator" />
+      </div>
+      <div class="iconWrapper" id="newNoteButton">
+        <img src="/icons/sticky.png" alt="Sticky Note" />
+      </div>
+      <div class="iconWrapper" id="todoIcon">
+        <img src="/icons/todo.png" alt="To Do List" />
+      </div>
+      <div class="iconWrapper" id="timerIcon">
+        <img src="/icons/stopwatch.png" alt="Timer" />
+      </div>
+    </div>
+  </div>
+    <div id="toolsHint" class="hint hidden">
+    <span>Try our new tools 👉</span>
+    <button id="closeHint">×</button>
+    </div>
+</div>
+		<div id="clock">
+			<div id="time"></div>
+			<div id="today"></div>
+		</div>
+        <div id="links">
+        	 <a href="#/" id="more-extensions" title="Top 100">
+               Top 100
+            </a>
+            <a href="#/" id="privacy-policy" title="Privacy Policy">
+               Privacy Policy
+            </a>
+            <a href="#" id="uninstall-link" title="Uninstall">
+               Uninstall 
+            </a>
+            <a href="#" id="rate-us" title="Rate Us Please">
+               ❤️ Rate App Please
+            </a>
+        </div>
+        <div id="addShortcut" class="none">
+            <input type="text" id="addName" max="10" placeholder="Website Name">
+            <input type="text" id="addUrl" placeholder="Website Url">
+            <button id="appendShortcut">Add</button>
+        </div>
+        <div id="newsBar">
+  <span id="newsText"></span>
+  <a id="allNewsLink" href="https://gameograf.com/news/" target="_blank">ALL NEWS</a>
+</div>
+
+
+        <script src="js/script.js"></script>
+        <script src="js/popup.js"></script>
+        <script src="js/newsBar.js"></script>
+        <script src="js/googletools.js"></script>
+        <script src="js/createStickyNote.js"></script>
+        <script src="js/calculator.js"></script>
+        <script src="js/todo.js"></script>
+        <script src="js/calendar.js"></script>
+        <script src="js/timer.js"></script>
+        <script src="js/chatgpt.js"></script>
+        
+
+	</body>
+</html>
