@@ -236,19 +236,5 @@ document.addEventListener("DOMContentLoaded", () => {
     todoIcon.addEventListener("click", createTodoPopup);
   }
 });
-document.addEventListener("DOMContentLoaded", function () {
-  const hint = document.getElementById("toolsHint");
-  const closeBtn = document.getElementById("closeHint");
 
-  // Daha önce kapatılmış mı kontrol et
-  if (!localStorage.getItem("toolsHintClosed")) {
-    hint.classList.remove("hidden");
-  }
-
-  // Kapatma butonuna basılırsa
-  closeBtn.addEventListener("click", () => {
-    hint.classList.add("hidden");
-    localStorage.setItem("toolsHintClosed", "true");
-  });
-});
 

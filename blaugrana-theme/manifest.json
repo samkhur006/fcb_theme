@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Blaugrana - FC Barcelona Theme",
+  "description": "Barcelona blue & red theme for Chrome tabs and toolbar",
+  "version": "1.0",
+  "theme": {
+    "colors": {
+      "frame": [0, 77, 152],
+      "frame_inactive": [165, 0, 68],
+      "toolbar": [10, 22, 46],
+      "tab_text": [255, 255, 255],
+      "tab_background_text": [200, 200, 200],
+      "bookmark_text": [255, 255, 255],
+      "ntp_text": [255, 255, 255],
+      "ntp_background": [15, 15, 25]
+    }
+  },
+  "icons": {
+    "128": "icon128.png"
+  }
+}
