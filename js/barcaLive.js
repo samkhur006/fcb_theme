@@ -235,8 +235,9 @@ function getTTLUntilAfterMatch(matchDate, fallbackMs) {
 function getNextMatchTTL() {
   const cached = getCached('barca_matches');
   const date = cached?.nextMatch?.date;
-  console.log('[MatchCenter] Next match date:', date);
-  return getTTLUntilAfterMatch(date, 6 * 60 * 60 * 1000);
+  if (!date) return 6 * 60 * 60 * 1000; // 6h fallback
+  const msUntilKickoff = new Date(date).getTime() - Date.now();
+  return msUntilKickoff > 0 ? msUntilKickoff : 15 * 1000; // cache till kickoff, or 15sec if already started
 }
 
 function getNextLaLigaMatchTTL() {
