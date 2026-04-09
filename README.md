@@ -2,8 +2,8 @@
 
 A custom Chrome extension that replaces your new tab page with an FC Barcelona-themed dashboard featuring live match updates, news, and productivity tools.
 
-![Active Window - Blaugrana Blue](screenshots/active.png)
-*Active window with Blaugrana blue tab bar*
+![Demo - Blaugrana Theme](screenshots/demo.gif)
+*Blaugrana blue tab bar with match center, news, and tools*
 
 ![Inactive Window - Blaugrana Red](screenshots/inactive.png)
 *Inactive window with Blaugrana red tab bar*
