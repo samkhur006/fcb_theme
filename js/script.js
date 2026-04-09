@@ -109,6 +109,12 @@ function removeShortcut(url) {
     createShortcuts();
 }
 
+$("#closeAddShortcut").off("click").on("click", () => {
+    $("#addShortcut").toggleClass("flex").toggleClass("none");
+    $("#addName").val("");
+    $("#addUrl").val("");
+});
+
 $("#appendShortcut").off("click").on("click", () => {
     let link_name = $("#addName").val();
     let link_url = $("#addUrl").val();
@@ -222,10 +228,7 @@ function handleCustomBackground() {
         setBackground();
     });
 }
-document.addEventListener("DOMContentLoaded", () => {
-  const icon = document.getElementById("calculatorIcon");
-  if (icon) icon.addEventListener("click", createCalculatorPopup);
-});
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const todoIcon = document.getElementById("todoIcon");

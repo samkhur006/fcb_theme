@@ -331,6 +331,25 @@ body {
 	width: 100%;
 }
 
+#addShortcut .close-add-btn {
+	position: absolute;
+	top: calc(8px * var(--scale));
+	right: calc(8px * var(--scale));
+	background: transparent;
+	border: none;
+	font-size: calc(24px * var(--scale));
+	color: #333;
+	cursor: pointer;
+	width: auto;
+	height: auto;
+	padding: 0;
+	line-height: 1;
+}
+
+#addShortcut .close-add-btn:hover {
+	color: #0072ff;
+}
+
 #addShortcut #appendShortcut {
 	background: #0072ff;
 	border-radius: calc(4px * var(--scale));
@@ -939,6 +958,64 @@ body {
   color: #fff;
 }
 
+.cal-months {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.month-item {
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.month-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.month-item.current {
+  background: #4CAF50;
+  color: #fff;
+}
+
+.cal-years {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 8px 0;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.year-item {
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  transition: all 0.2s;
+  font-size: 16px;
+}
+
+.year-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.05);
+}
+
+.year-item.current {
+  background: #4CAF50;
+  color: #fff;
+}
+
 
 .timer-header h3 {
   margin: 0 0 12px;
@@ -977,54 +1054,9 @@ body {
   background: rgba(66,133,244,1);
 }
 
-#chatgptIcon {
-  cursor: pointer;
-}
 
-.chatgpt-popup {
-  position: fixed;
-  top: 215px;
-  right: 80px;
-  display: flex;
-  gap: 4px;
-  padding: 8px;
-  background: #1e1e1e;
-  border: 1px solid #444;
-  border-radius: 12px;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s ease;
-  z-index: 9999;
-}
 
-.chatgpt-popup.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
 
-.chatgpt-popup input {
-  flex: 1;
-  background: #333;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  width: 180px;
-}
-
-.chatgpt-popup button {
-  background: #10a37f;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 10px;
-  cursor: pointer;
-}
-
-.chatgpt-popup.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
 
 .iconWrapper img {
   width: 30px;
