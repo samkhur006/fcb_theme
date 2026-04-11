@@ -231,7 +231,7 @@ async function fetchLiveMatches() {
 function getTTLUntilAfterMatch(matchDate, fallbackMs) {
   if (!matchDate) return fallbackMs;
   try {
-    const msUntilUpdated = new Date(matchDate).getTime() + (2 * 60 * 60 * 1000) - Date.now();
+    const msUntilUpdated = new Date(matchDate).getTime() + (2 * 60 * 60 * 1000 + 10 * 60 * 1000) - Date.now();
     if (msUntilUpdated > 0) return msUntilUpdated;
   } catch (e) { /* ignore */ }
   return fallbackMs;
@@ -256,6 +256,7 @@ async function fetchBarcaMatches() {
   if (cached) return cached;
   
   let allBarcaMatches = [];
+  let nextAnyLaLigaDate = null; // Next La Liga match by ANY team (for standings cache)
   
   // Fetch from all competitions Barcelona plays in
   for (const [comp, leagueId] of Object.entries(LEAGUE_IDS)) {
@@ -263,6 +264,35 @@ async function fetchBarcaMatches() {
       const data = await fetchAPI('/football-get-all-matches-by-league', { leagueid: leagueId });
       
       if (data && data.status === 'success' && data.response && Array.isArray(data.response.matches)) {
+        // For La Liga: find the soonest match that will update standings
+        // Priority: currently live match > next upcoming match
+        if (comp === 'LALIGA') {
+          const now = new Date();
+          let liveMatch = null;
+          let nextUpcoming = null;
+          const sorted = [...data.response.matches].sort((a, b) =>
+            (a.status?.utcTime || '').localeCompare(b.status?.utcTime || '')
+          );
+          for (const m of sorted) {
+            const mDate = new Date(m.status?.utcTime || 0);
+            if (m.status?.started && !m.status?.finished && !liveMatch) {
+              liveMatch = m;
+            }
+            if (!m.status?.started && !m.status?.finished && mDate > now && !nextUpcoming) {
+              nextUpcoming = m;
+            }
+            if (liveMatch && nextUpcoming) break;
+          }
+          // If a match is live, standings will update when it ends — use its kickoff
+          if (liveMatch) {
+            nextAnyLaLigaDate = liveMatch.status?.utcTime || null;
+            console.log(`[MatchCenter] La Liga match LIVE: ${liveMatch.home?.name} vs ${liveMatch.away?.name} — standings will refresh after it ends`);
+          } else if (nextUpcoming) {
+            nextAnyLaLigaDate = nextUpcoming.status?.utcTime || null;
+            console.log(`[MatchCenter] Next La Liga match (any team): ${nextUpcoming.home?.name} vs ${nextUpcoming.away?.name} at ${nextAnyLaLigaDate}`);
+          }
+        }
+        
         const barcaInLeague = data.response.matches.filter(m => {
           const homeName = m.home?.name || '';
           const awayName = m.away?.name || '';
@@ -301,10 +331,9 @@ async function fetchBarcaMatches() {
   
   const now = new Date();
   
-  // Find last finished match, next upcoming match, and next La Liga match
+  // Find last finished match and next upcoming match
   let lastMatch = null;
   let nextMatch = null;
-  let nextLaLigaDate = null;
   
   for (const m of allBarcaMatches) {
     const matchDate = new Date(m.status?.utcTime || 0);
@@ -313,9 +342,6 @@ async function fetchBarcaMatches() {
       lastMatch = m;
     } else if (!m.status?.started && !m.status?.finished && matchDate > now) {
       if (!nextMatch) nextMatch = m;
-      if (!nextLaLigaDate && m._competition === 'LaLiga') {
-        nextLaLigaDate = m.status?.utcTime || null;
-      }
     }
   }
   
@@ -339,7 +365,7 @@ async function fetchBarcaMatches() {
   const result = {
     lastMatch: normalize(lastMatch),
     nextMatch: normalize(nextMatch),
-    nextLaLigaDate: nextLaLigaDate
+    nextLaLigaDate: nextAnyLaLigaDate
   };
   
   console.log('[MatchCenter] Last match:', result.lastMatch);
@@ -397,7 +423,7 @@ async function fetchStandings() {
       // Cache until next La Liga matchday
       const standingsTTL = getNextLaLigaMatchTTL();
       setCache('standings', result, standingsTTL);
-      console.log(`[MatchCenter] Standings cached for ${Math.round(standingsTTL/3600000)}h`);
+      console.log(`[MatchCenter] Standings cached for ${Math.round(standingsTTL/3600000)}h`); 
       return result;
     }
   } catch (error) {
