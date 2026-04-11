@@ -247,6 +247,7 @@ function getNextMatchTTL() {
 
 function getNextLaLigaMatchTTL() {
   const cached = getCached('barca_matches');
+  console.log(`[MatchCenter] nextLaLigaDate in cache: ${cached?.nextLaLigaDate}`);
   return getTTLUntilAfterMatch(cached?.nextLaLigaDate, 24 * 60 * 60 * 1000);
 }
 
