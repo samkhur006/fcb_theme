@@ -701,10 +701,14 @@ function toggleMatchCenter() {
     // Hide panel, show FAB
     panel.classList.add('mc-hidden');
     if (fab) fab.classList.add('mc-fab-visible');
+    localStorage.setItem('fcb_mc_closed', 'true');
   } else {
     // Show panel, hide FAB
     panel.classList.remove('mc-hidden');
     if (fab) fab.classList.remove('mc-fab-visible');
+    localStorage.removeItem('fcb_mc_closed');
+    // Fetch data when reopening
+    updateMatchCenter();
   }
 }
 
@@ -734,7 +738,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cacheInfo.addEventListener('click', (e) => {
       e.stopPropagation();
       Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('fcb_')) localStorage.removeItem(key);
+        if (key.startsWith('fcb_') && key !== 'fcb_mc_closed') localStorage.removeItem(key);
       });
       updateMatchCenter();
     });
@@ -754,12 +758,20 @@ document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.local.get('fcb_clear_cache', (result) => {
     if (result.fcb_clear_cache) {
       Object.keys(localStorage).forEach(key => {
-        if (key.startsWith('fcb_')) localStorage.removeItem(key);
+        if (key.startsWith('fcb_') && key !== 'fcb_mc_closed') localStorage.removeItem(key);
       });
       chrome.storage.local.remove('fcb_clear_cache');
       console.log('[MatchCenter] Cleared caches after install/update');
     }
-    // Initial load
-    updateMatchCenter();
+    // Restore open/closed state
+    const panel = document.getElementById('matchCenterPanel');
+    const fab = document.getElementById('mcFab');
+    if (localStorage.getItem('fcb_mc_closed') === 'true') {
+      if (panel) panel.classList.add('mc-hidden');
+      if (fab) fab.classList.add('mc-fab-visible');
+      console.log('[MatchCenter] Panel closed — skipping API calls');
+    } else {
+      updateMatchCenter();
+    }
   });
 });
