@@ -5,7 +5,24 @@
 // RAPID_API_KEY is loaded from config.js (gitignored)
 const RAPID_API_HOST = 'free-api-live-football-data.p.rapidapi.com';
 const BARCA_KEYWORDS = ['barcelona', 'barça', 'barca'];
+const BARCA_TEAM_ID = 8634;
 const BARCA_LOGO = 'https://images.fotmob.com/image_resources/logo/teamlogo/8634.png';
+
+const LEAGUE_IDS = {
+  LALIGA: 87,
+  CHAMPIONS_LEAGUE: 42,
+  COPA_DEL_REY: 138,
+  UEFA_SUPER_CUP: 74,
+  CLUB_WORLD_CUP: 78
+};
+
+const COMP_NAMES = {
+  LALIGA: 'LaLiga',
+  CHAMPIONS_LEAGUE: 'Champions League',
+  COPA_DEL_REY: 'Copa del Rey',
+  UEFA_SUPER_CUP: 'UEFA Super Cup',
+  CLUB_WORLD_CUP: 'Club World Cup'
+};
 
 // Cache TTLs in milliseconds
 const CACHE_TTL = {
@@ -142,29 +159,17 @@ function formatMatchDate(dateStr) {
   return d.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
 }
 
-function isBarcaTeam(name) {
+function isBarcaTeam(name, teamId) {
   if (!name) return false;
+  if (teamId === BARCA_TEAM_ID) return true;
   const lower = name.toLowerCase();
+  // Exclude other clubs with "Barcelona" in name (e.g. Barcelona SC, Ecuador)
+  if (lower.includes('barcelona sc') || lower.includes('barcelona de')) return false;
   return BARCA_KEYWORDS.some(kw => lower.includes(kw));
 }
 
 // ============== LEAGUE IDS ==============
-const BARCA_TEAM_ID = 8634;
-const LEAGUE_IDS = {
-  LALIGA: 87,
-  CHAMPIONS_LEAGUE: 42,
-  COPA_DEL_REY: 138,
-  UEFA_SUPER_CUP: 74,
-  CLUB_WORLD_CUP: 78
-};
 
-const COMP_NAMES = {
-  LALIGA: 'LaLiga',
-  CHAMPIONS_LEAGUE: 'Champions League',
-  COPA_DEL_REY: 'Copa del Rey',
-  UEFA_SUPER_CUP: 'UEFA Super Cup',
-  CLUB_WORLD_CUP: 'Club World Cup'
-};
 
 // ============== FETCH LIVE MATCHES ==============
 async function fetchLiveMatches() {
@@ -182,7 +187,7 @@ async function fetchLiveMatches() {
         const homeName = match.home?.name || '';
         const awayName = match.away?.name || '';
         
-        if (isBarcaTeam(homeName) || isBarcaTeam(awayName)) {
+        if (isBarcaTeam(homeName, match.home?.id) || isBarcaTeam(awayName, match.away?.id)) {
           // Register opponent team ID from live data
           if (match.home?.name && match.home?.id) registerTeam(match.home.name, match.home.id);
           if (match.away?.name && match.away?.id) registerTeam(match.away.name, match.away.id);
@@ -261,7 +266,7 @@ async function fetchBarcaMatches() {
         const barcaInLeague = data.response.matches.filter(m => {
           const homeName = m.home?.name || '';
           const awayName = m.away?.name || '';
-          return isBarcaTeam(homeName) || isBarcaTeam(awayName);
+          return isBarcaTeam(homeName, m.home?.id) || isBarcaTeam(awayName, m.away?.id);
         });
         
         // Register team IDs only for Barca's opponents

@@ -1,5 +1,3 @@
- loadNotes();  // Yapışkan notları yükle
-
 function getRandomColor() {
     const colors = ["#FFD700", "#FFB6C1", "#ADFF2F", "#87CEFA", "#FFA07A", "#DA70D6"];
     return colors[Math.floor(Math.random() * colors.length)];
@@ -94,7 +92,18 @@ function saveNotes() {
 }
 
 function loadNotes() {
-    const notes = JSON.parse(localStorage.getItem("stickyNotes") || "[]");
+    // Remove any existing notes from DOM first
+    document.querySelectorAll('.sticky-note').forEach(n => n.remove());
+    // Deduplicate by ID
+    const raw = JSON.parse(localStorage.getItem("stickyNotes") || "[]");
+    const seen = new Set();
+    const notes = raw.filter(n => {
+        if (seen.has(n.id)) return false;
+        seen.add(n.id);
+        return true;
+    });
+    // Save deduplicated list back
+    localStorage.setItem("stickyNotes", JSON.stringify(notes));
     notes.forEach(data => createStickyNote(data));
 }
 
